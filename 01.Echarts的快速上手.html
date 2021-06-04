@@ -1,0 +1,148 @@
+<!--
+ * @Author: wwssaabb
+ * @Date: 2021-06-04 16:31:44
+ * @LastEditTime: 2021-06-04 17:47:37
+ * @FilePath: \demo\echarts_demo\01.Echarts的快速上手.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./lib/echarts.min.js"></script>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      user-select: none;
+    }
+    body{
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container{
+      width: 20vw;
+      height: 20vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+  </div>
+  <script type="text/javascript">
+  let grade=[
+    {name:'张三',value:88},
+    {name:'李四',value:92},
+    {name:'王五',value:63},
+    {name:'闰土',value:77},
+    {name:'小明',value:94},
+    {name:'茅台',value:80},
+    {name:'二妞',value:72},
+    {name:'大强',value:86},
+  ]
+  console.log(grade.map(i=>i.name))
+  let names=grade.map(i=>i.name)
+  console.log(grade.map(i=>i.value))
+  let values=grade.map(i=>i.value)
+
+  //初始化echarts实例对象
+  var mCharts = echarts.init(document.querySelector('.container'))
+  //准备配置项
+  var option={
+    title:{
+      show:true,
+      text:'成绩',
+      textStyle:{
+        color:'cyan',
+        
+      }
+    },
+    xAxis:{
+      type:'category',
+      data:names
+    },
+    yAxis:{
+      type:'value'
+    },
+    series:[
+      //常见效果
+      //标记：最大值，最小值，平均值
+      //最大值、最小值 markPoint
+      //平均值 maxLine
+      //显示：数值、柱宽度、横向柱状图(改变x,y)
+      //数值：label
+      //平均值 maxLine
+
+
+
+      //柱状图 bar
+      {
+        name:'语文',
+        type:'bar',
+        markPoint:{
+          data:[
+            {type:'max',name:'最大值'},
+            {type:'min',name:'最小值'},
+          ]
+        },
+        markLine:{
+          data:[
+            {type:'average',name:'平均值'}
+          ]
+        },
+        barWidth:'10',
+        label:{show:true,rotate:45,position:'inside'},
+        data:values
+      },
+      //折线图 line
+      {
+        name:'数学',
+        type:'line',
+        data:values
+      },
+      //散点图 scatter
+      /* {
+        name:'数学',
+        type:'scatter',
+        data:[86,97,92]
+      }, */
+      //饼状图 pie
+      /* {
+        name:'数学',
+        type:'pie',
+        data:[86,97,92]
+      }, */
+      //地点 map
+      /* {
+        name:'数学',
+        type:'line',
+        data:[86,97,92]
+      }, */
+      //雷达图 radar
+     /*  {
+        name:'数学',
+        type:'line',
+        data:[86,97,92]
+      }, */
+      //仪表盘图 gauge
+      /* {
+        name:'数学',
+        type:'line',
+        data:[86,97,92]
+      }, */
+    ]
+  }
+  mCharts.setOption(option)
+
+  </script>
+</body>
+</html>
