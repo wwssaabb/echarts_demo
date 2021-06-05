@@ -1,0 +1,73 @@
+<!--
+ * @Author: wwssaabb
+ * @Date: 2021-06-05 16:36:56
+ * @LastEditTime: 2021-06-05 17:16:53
+ * @FilePath: \demo\echarts_demo\pie_demo.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pie_demo</title>
+  <script src="./lib/echarts.min.js"></script>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      user-select: none;
+    }
+    body{
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container{
+      width: 30vw;
+      height: 30vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container"></div>
+
+  <script type="text/javascript">
+    const mCharts=echarts.init(document.querySelector('.container'))
+    let pieData=[
+      {name:'淘宝',value:11231},
+      {name:'京东',value:22673},
+      {name:'唯品会',value:6123},
+      {name:'1号店',value:8989},
+      {name:'聚美优品',value:6700},
+    ]
+    const option={
+      series:[
+        {
+          type:'pie',
+          data:pieData,
+          label:{
+            show:true,
+            formatter:function(arg){
+              console.log(arg)
+              return arg.name+'平台'+arg.value+'元\n占比'+arg.percent+'%'
+            }
+          },
+          radius:['25%','50%'],   //100 饼图的半径  50% 容器宽度和长度较小的那一部分的一半来进行百分比设置 ['25%','50%']设置环形饼图
+          //roseType:'radius',    //南丁格尔图，每一个区域的半径都不一样
+          selectedMode:'multiple',   //选中区域偏离动画效果，single 只能单选，multiple 能选多个
+          selectedOffset:50
+        }
+      ]
+    }
+  
+    mCharts.setOption(option)
+  
+  </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!--
+ * @Author: wwssaabb
+ * @Date: 2021-06-05 09:10:55
+ * @LastEditTime: 2021-06-05 11:06:26
+ * @FilePath: \demo\echarts_demo\line_demo.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>line_demo</title>
+  <script src="./lib/echarts.min.js"></script>
+  <style>
+    *{
+      margin: 0;
+      padding:0;
+      user-select: none;
+    }
+    body{
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container{
+      width: 30vw;
+      height: 30vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container"></div>
+
+  <script type="text/javascript">
+    let sales={
+      '1月':3000,
+      '2月':2800,
+      '3月':900,
+      '4月':1000,
+      '5月':800,
+      '6月':700,
+      '7月':1400,
+      '8月':1300,
+      '9月':900,
+      '10月':1000,
+      '11月':800,
+      '12月':600,
+    }
+    let mCharts=echarts.init(document.querySelector('.container'))
+    let option={
+      title:{
+        show:true,
+        text:'康师傅泡面销售图'
+      },
+      xAxis:{
+        type:'category',
+        data:Object.keys(sales)
+      },
+      yAxis:{
+        type:'value',
+      },
+      series:[
+        {
+          name:'康师傅',
+          type:'line',
+          data:Object.values(sales),
+          markPoint:{
+
+          },
+          markPoint:{
+            data:[
+              {type:'min',name:'最小值'},
+              {type:'max',name:'最大值'},
+            ]
+          },
+          markLine:{
+            data:[{type:'average',name:'平均值'}]
+          },
+          smooth:true,
+          lineStyle:{
+            color:'#888',
+            type:'dashed'
+          },
+          areaStyle:{
+            color:'cyan'
+          }
+        },
+        
+      ],
+      tooltip:{
+        show:true
+      },
+    }
+    mCharts.setOption(option)
+  </script>
+
+</body>
+</html>
