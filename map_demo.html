@@ -1,0 +1,65 @@
+<!--
+ * @Author: wwssaabb
+ * @Date: 2021-06-05 16:36:56
+ * @LastEditTime: 2021-06-05 16:40:23
+ * @FilePath: \demo\echarts_demo\template.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>map_demo</title>
+  <script src="./lib/echarts.min.js"></script>
+  <script src="./lib/jquery.min.js"></script>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      user-select: none;
+    }
+    body{
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container{
+      width: 40vw;
+      height: 40vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container"></div>
+
+  <script type="text/javascript">
+    const mCharts=echarts.init(document.querySelector('.container'))
+    $.get('./json/map/china.json',function(res){
+      console.log(res)
+      echarts.registerMap('chinaMap',res)
+      var option={
+        geo:{
+          type:'map',
+          map:'chinaMap',
+          roam:true,
+          label:{
+            show:true
+          },
+          zoom:2
+        }
+      }
+      mCharts.setOption(option)
+    })
+
+    
+  
+  
+  </script>
+</body>
+</html>
