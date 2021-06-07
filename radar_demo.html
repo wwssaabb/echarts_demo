@@ -1,8 +1,8 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-05 16:36:56
- * @LastEditTime: 2021-06-07 11:55:14
- * @FilePath: \demo\echarts_demo\template.html
+ * @LastEditTime: 2021-06-07 17:01:40
+ * @FilePath: \demo\echarts_demo\radar_demo.html
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -10,8 +10,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>pie_demo</title>
+  <title>radar_demo</title>
   <script src="./lib/echarts.min.js"></script>
+  <script src="./theme/myTheme.js"></script>
   <style>
     *{
       margin:0;
@@ -40,10 +41,28 @@
   <div class="container"></div>
 
   <script type="text/javascript">
-    const mCharts=echarts.init(document.querySelector('.container'))
+    var radarData=[
+      {name:'华为手机',value:[88,92,87,80,89]},
+      {name:'小米手机',value:[90,96,84,95,93]},
+    ]
+    var maxData=[{name:'实用性',max:100},{name:'功能性',max:100},{name:'拍照',max:100},{name:'跑分',max:100},{name:'续航',max:100}]
+    const mCharts=echarts.init(document.querySelector('.container'),'myTheme')
 
     const option={
-      
+      radar:{
+        indicator:maxData,
+        shape:'circle',  //雷达图最外层的图形
+      },
+      series:[
+        {
+          type:'radar',
+          data:radarData, 
+          areaStyle:{},//填充雷达图的图形
+          tooltip:{
+            show:true
+          }
+        }
+      ]
     }
   
     mCharts.setOption(option)

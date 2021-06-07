@@ -1,8 +1,8 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-05 16:36:56
- * @LastEditTime: 2021-06-07 11:55:14
- * @FilePath: \demo\echarts_demo\template.html
+ * @LastEditTime: 2021-06-07 18:00:53
+ * @FilePath: \demo\echarts_demo\gauge_demo.html
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +10,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>pie_demo</title>
+  <title>gauge_demo</title>
   <script src="./lib/echarts.min.js"></script>
   <style>
     *{
@@ -28,6 +28,8 @@
     .container{
       width: 30vw;
       height: 30vw;
+      border-radius: 50%;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -40,13 +42,26 @@
   <div class="container"></div>
 
   <script type="text/javascript">
-    const mCharts=echarts.init(document.querySelector('.container'))
+    var gaugeData=[{value:98}]
+
+    const mCharts=echarts.init(document.querySelector('.container'),'dark')
 
     const option={
-      
+      series:{
+        type:'gauge',
+        data:gaugeData,
+        min:0,
+        max:160
+      }
     }
   
     mCharts.setOption(option)
+
+    setInterval(()=>{
+      gaugeData[0].value=gaugeData[0].value=0?0:gaugeData[0].value-1
+      option.series.data=gaugeData,
+      mCharts.setOption(option)
+    },2000)
   
   </script>
 </body>
