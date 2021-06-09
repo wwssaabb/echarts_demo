@@ -1,0 +1,119 @@
+<!--
+ * @Author: wwssaabb
+ * @Date: 2021-06-04 16:31:44
+ * @LastEditTime: 2021-06-05 09:09:28
+ * @FilePath: \demo\echarts_demo\01.Echarts的快速上手.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>交互API_demo</title>
+  <script src="./lib/echarts.min.js"></script>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      user-select: none;
+    }
+    body{
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container{
+      width: 30vw;
+      height: 30vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+  </div>
+  <script type="text/javascript">
+  let grade=[
+    {name:'张三',chinese:88,math:98},
+    {name:'李四',chinese:92,math:89},
+    {name:'王五',chinese:63,math:91},
+    {name:'闰土',chinese:77,math:72},
+    {name:'小明',chinese:94,math:88},
+    {name:'茅台',chinese:80,math:83},
+    {name:'二妞',chinese:72,math:69},
+    {name:'大强',chinese:86,math:79},
+  ]
+  console.log(grade.map(i=>i.name))
+  let names=grade.map(i=>i.name)
+  console.log(grade.map(i=>i.value))
+  let chineseArr=grade.map(i=>i.chinese)
+  let mathArr=grade.map(i=>i.math)
+
+  //初始化echarts实例对象
+  var mCharts = echarts.init(document.querySelector('.container'))
+  //准备配置项
+  var option={
+    title:{
+      show:true,
+      text:'成绩',
+      textStyle:{
+        color:'cyan',
+      },
+    },
+    tooltip:{
+      show:true,
+      trigger:'axis',
+      triggerOn:'click'
+    },
+    toolbox:{
+      feature:{
+        saveAsImage:{},//开启保存图片功能
+        dataView:{},//开启数据展示功能
+        restore:{},//开启恢复原始数据功能
+        dataZoom:{},//开启区域缩放功能
+        magicType:{type:['bar','line']},//开启图标类型切换功能
+      }
+    },
+    legend:{
+      data:['语文','数学']
+    },
+    xAxis:{
+      type:'category',
+      data:names
+    },
+    yAxis:{
+      type:'value'
+    },
+    series:[
+      //常见效果
+      //标记：最大值，最小值，平均值
+      //最大值、最小值 markPoint
+      //平均值 maxLine
+      //显示：数值、柱宽度、横向柱状图(改变x,y)
+      //数值：label
+      //平均值 maxLine
+
+      //柱状图 bar
+      {
+        name:'语文',
+        type:'bar',
+        data:chineseArr
+      },
+      {
+        name:'数学',
+        type:'bar',
+        data:mathArr
+      },
+    ]
+  }
+  mCharts.setOption(option)
+
+  </script>
+</body>
+</html>
