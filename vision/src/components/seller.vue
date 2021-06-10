@@ -1,0 +1,187 @@
+<template>
+  <div class="com-comtainer">
+    <div class="com-chart" ref="seller"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      chartInstance:null, //echarts的实例对象
+      all_data:null,
+      currentPage:3,  //当前显示的页数
+      totalPage:0,    //总共的页数
+      show_data:[],   //图表显示的数据
+      timerId:null,     //页数变化的定时器
+    }
+  },
+  mounted() {
+    this.initChart()
+    this.getData()
+    window.addEventListener('resize',this.screenAdapter)
+    this.screenAdapter()
+  },
+  methods: {
+    initChart() { //初始化图表
+      this.chartInstance=this.$echarts.init(this.$refs.seller,'chalk')
+      //监听鼠标移入，取消图表变化定时器
+      this.chartInstance.on('mouseover',()=>{
+        clearInterval(this.timerId)
+        this.timerId=null
+      })
+      this.chartInstance.on('mouseout',()=>{
+        this.startIntervel()
+      })
+    },
+    async getData(){  //获取服务器数据
+      const res=await this.$http.get('/seller')
+      console.log(res)
+      this.all_data=res.data
+      //处理数据，从小到大排序
+      this.all_data.sort((a,b)=>b.value-a.value)
+      //处理数据，分页，5条数据一页
+      this.totalPage=Math.ceil(this.all_data.length/5)
+      for(let p=0;p<3;p++){
+        let page=this.all_data.slice(p*5,(p+1)*5)
+        this.show_data.push(page)
+      }
+      console.log(this.show_data)
+      this.initOption()
+      this.startIntervel()
+    },
+    initOption(){//初始化option
+      let category_data=this.show_data[this.currentPage-1].map(i=>i.name)
+      let value_data=this.show_data[this.currentPage-1].map(i=>i.value)
+      let option={
+        title:{
+          text:'商家销售量统计',
+          top:20,
+          left:20,
+          textStyle:{
+            fontSize:40,
+          }
+        },
+        grid:{
+          top:'10%',
+          left:'5%',
+          right:'5%',
+          bottom:'5%',
+          containLabel:true
+        },
+        xAxis:{
+          type:'value'
+        },
+        yAxis:{
+          type:'category',
+          data:category_data
+        },
+        series:[
+          {
+            type:'bar',
+            data:value_data,
+            barWidth:60,
+            label:{
+              show:true,
+              position:'right',
+              color:'#fff',
+              textStyle:{
+                fontSize:20
+              }
+            },
+            itemStyle:{
+              barBorderRadius:[0,30,30,0],
+              color:new this.$echarts.graphic.LinearGradient(0,0,1,0,[
+                {
+                  offset:0,
+                  color:'#5052ee'
+                },
+                {
+                  offset:1,
+                  color:'#ab6ee5'
+                }
+              ])
+            }
+          }
+        ],
+        tooltip:{
+          show:true,
+          trigger:'axis',
+          axisPointer:{
+            type:'line',
+            z:0,
+            lineStyle:{
+              width:50,
+              color:'#2d3443'
+            }
+          }
+        }
+
+      }
+      this.chartInstance.setOption(option)
+    },
+    dataOption(){//数据更新时重新配置option
+      let category_data=this.show_data[this.currentPage-1].map(i=>i.name)
+      let value_data=this.show_data[this.currentPage-1].map(i=>i.value)
+      let option={
+        yAxis:{
+          data:category_data
+        },
+        series:[
+          {
+            data:value_data
+          }
+        ]
+      }
+      this.chartInstance.setOption(option)
+    },
+    screenAdapter(){//窗口分辨率发生变化时重新配置option
+      const titleFontSize=this.$refs.seller.offsetWidth/100*3.12
+      const option={
+        title:{
+          textStyle:{
+            fontSize:titleFontSize
+          }
+        },
+        series:[
+          {
+            barWidth:titleFontSize,
+
+          }
+        ],
+        tooltip:{
+          itemStyle:{
+            width:titleFontSize,
+            lineStyle:{
+              barBorderRadius:[0,titleFontSize/2,titleFontSize/2,0]
+            }
+          }
+        }
+      }
+      this.chartInstance.setOption(option)
+      this.chartInstance.resize() //重置图表大小
+    },
+    
+    startIntervel(){
+      if(this.timerId){
+        clearInterval(this.timerId)
+        this.timerId=null
+      }
+      this.timerId=setInterval(()=>{
+        this.currentPage<this.totalPage?this.currentPage+=1:this.currentPage=1
+      },3000)
+    }
+  },
+  watch:{
+    currentPage(){
+      this.dataOption()
+    }
+  },
+  destroyed() {
+    clearInterval(this.timerId)
+    this.timerId=null
+  },
+};
+</script>
+
+<style lang="scss" scope></style>

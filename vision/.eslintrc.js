@@ -1,3 +1,9 @@
+/*
+ * @Author: wwssaabb
+ * @Date: 2021-06-10 10:34:03
+ * @LastEditTime: 2021-06-10 14:51:26
+ * @FilePath: \demo\echarts_demo\vision\.eslintrc.js
+ */
 module.exports = {
   root: true,
   env: {
@@ -5,7 +11,7 @@ module.exports = {
   },
   extends: [
     'plugin:vue/essential',
-    '@vue/standard'
+    /* '@vue/standard' */
   ],
   parserOptions: {
     parser: 'babel-eslint'
