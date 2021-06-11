@@ -23,7 +23,7 @@ export default {
     this.screenAdapter()
   },
   methods: {
-    initChart() { //初始化图表
+    initChart() {//初始化图表
       this.chartInstance=this.$echarts.init(this.$refs.seller,'chalk')
       //监听鼠标移入，取消图表变化定时器
       this.chartInstance.on('mouseover',()=>{
@@ -33,34 +33,11 @@ export default {
       this.chartInstance.on('mouseout',()=>{
         this.startIntervel()
       })
-    },
-    async getData(){  //获取服务器数据
-      const res=await this.$http.get('/seller')
-      console.log(res)
-      this.all_data=res.data
-      //处理数据，从小到大排序
-      this.all_data.sort((a,b)=>b.value-a.value)
-      //处理数据，分页，5条数据一页
-      this.totalPage=Math.ceil(this.all_data.length/5)
-      for(let p=0;p<3;p++){
-        let page=this.all_data.slice(p*5,(p+1)*5)
-        this.show_data.push(page)
-      }
-      console.log(this.show_data)
-      this.initOption()
-      this.startIntervel()
-    },
-    initOption(){//初始化option
-      let category_data=this.show_data[this.currentPage-1].map(i=>i.name)
-      let value_data=this.show_data[this.currentPage-1].map(i=>i.value)
       let option={
         title:{
-          text:'商家销售量统计',
+          text:'▍商家销售量统计',
           top:20,
           left:20,
-          textStyle:{
-            fontSize:40,
-          }
         },
         grid:{
           top:'10%',
@@ -74,13 +51,10 @@ export default {
         },
         yAxis:{
           type:'category',
-          data:category_data
         },
         series:[
           {
             type:'bar',
-            data:value_data,
-            barWidth:60,
             label:{
               show:true,
               position:'right',
@@ -90,7 +64,6 @@ export default {
               }
             },
             itemStyle:{
-              barBorderRadius:[0,30,30,0],
               color:new this.$echarts.graphic.LinearGradient(0,0,1,0,[
                 {
                   offset:0,
@@ -111,7 +84,6 @@ export default {
             type:'line',
             z:0,
             lineStyle:{
-              width:50,
               color:'#2d3443'
             }
           }
@@ -119,6 +91,19 @@ export default {
 
       }
       this.chartInstance.setOption(option)
+    },
+    async getData(){//获取服务器数据
+      const res=await this.$http.get('/seller')
+      this.all_data=res.data
+      //处理数据，从小到大排序
+      this.all_data.sort((a,b)=>b.value-a.value)
+      //处理数据，分页，5条数据一页
+      this.totalPage=Math.ceil(this.all_data.length/5)
+      for(let p=0;p<3;p++){
+        let page=this.all_data.slice(p*5,(p+1)*5)
+        this.show_data.push(page)
+      }
+      this.dataOption()
     },
     dataOption(){//数据更新时重新配置option
       let category_data=this.show_data[this.currentPage-1].map(i=>i.name)
@@ -146,14 +131,15 @@ export default {
         series:[
           {
             barWidth:titleFontSize,
-
+            itemStyle:{
+              barBorderRadius:[0,titleFontSize/2,titleFontSize/2,0]
+            }
           }
         ],
         tooltip:{
-          itemStyle:{
-            width:titleFontSize,
+          axisPointer:{
             lineStyle:{
-              barBorderRadius:[0,titleFontSize/2,titleFontSize/2,0]
+              width:titleFontSize-10
             }
           }
         }
@@ -161,7 +147,6 @@ export default {
       this.chartInstance.setOption(option)
       this.chartInstance.resize() //重置图表大小
     },
-    
     startIntervel(){
       if(this.timerId){
         clearInterval(this.timerId)
