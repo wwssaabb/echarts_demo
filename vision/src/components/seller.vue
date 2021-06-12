@@ -165,6 +165,7 @@ export default {
   destroyed() {
     clearInterval(this.timerId)
     this.timerId=null
+    window.removeEventListener('resize',this.screenAdapter)
   },
 };
 </script>

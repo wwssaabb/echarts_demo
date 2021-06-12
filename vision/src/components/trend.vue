@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-11 08:14:17
- * @LastEditTime: 2021-06-11 12:02:19
+ * @LastEditTime: 2021-06-12 09:04:29
  * @FilePath: \demo\echarts_demo\vision\src\components\Trend.vue
 -->
 <template>

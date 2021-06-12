@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-11 12:02:48
- * @LastEditTime: 2021-06-11 17:51:54
+ * @LastEditTime: 2021-06-12 09:01:33
  * @FilePath: \demo\echarts_demo\vision\src\components\map.vue
 -->
 <template>
@@ -86,7 +86,6 @@ export default {
           }
         }
       })
-
       let option={ 
         legend:{
           data:legendArr,
@@ -145,7 +144,10 @@ export default {
       this.chartInstance.setOption(option)
     }
   },
- 
+  destroyed() {
+    window.removeEventListener('resize',this.screenAdapter)
+    this.chartInstance.off('click',this.changeCity)
+  },
 }
 </script>
 

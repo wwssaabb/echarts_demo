@@ -19,11 +19,25 @@ export default {
   mounted() {
     this.initChart()
     this.getData()
+    window.addEventListener('resize',this.screenAdapter)
+    this.screenAdapter()
   },
   methods: {
     initChart(){
       this.chartInstance=this.$echarts.init(this.$refs.rank,'chalk')
       let option={
+        title:{
+          top:20,
+          left:20,
+          text:'▍地区销售排行榜',
+        },
+        grid:{
+          top:'15%',
+          left:'5%',
+          right:'5%',
+          bottom:'5%',
+          containLabel:true
+        },
         xAxis:{
           type:'category',
         },
@@ -33,19 +47,28 @@ export default {
         series:[
           {
             type:'bar',
-            barWidth:60,
             itemStyle:{
-              barBorderRadius:[30,30,0,0],
-              color:new this.$echarts.graphic.LinearGradient(0,0,0,1,[
-                {
-                  offset:0,
-                  color:'#0cb830'
-                },
-                {
-                  offset:1,
-                  color:'#666'
-                },
-              ])
+              color:(res)=>{
+                console.log(res)
+                let colorArr=null
+                if(res.value>300){
+                  colorArr=['#0ba82c','#4ff778']
+                }else if(res.value>200){
+                  colorArr=['#2e72bf','#23e5e5']
+                }else{
+                  colorArr=['#5052ee','#ab6ee5']
+                }
+                return new this.$echarts.graphic.LinearGradient(0,0,0,1,[
+                        {
+                          offset:0,
+                          color:colorArr[0]
+                        },
+                        {
+                          offset:1,
+                          color:colorArr[1]
+                        },
+                      ])
+                }
             }
           }
         ],
@@ -57,6 +80,12 @@ export default {
         }
       }
       this.chartInstance.setOption(option)
+      this.chartInstance.on('mousemove',()=>{ //鼠标移入图表
+        clearInterval(this.timeID)
+        this.timeID=null
+      })
+      this.chartInstance.on('mouseout',this.starInterval) //鼠标移出图表
+      
     },
     async getData(){
       let {data:res}=await this.$http.get('/rank')
@@ -86,17 +115,54 @@ export default {
       this.chartInstance.setOption(option)
     },
     screenAdapter(){
-      let option={}
+      let width=this.$refs.rank.offsetWidth /100 *3.125  //1920的情况下为60
+      console.log(width)
+      let option={
+        title:{
+          textStyle:{
+            fontSize:width<22?22:width>40?40:width
+          },
+        },
+        xAxis:{
+          
+        },
+        yAxis:{
+          
+        },
+        series:[
+          {
+            barWidth:width*1.5,
+            itemStyle:{
+              barBorderRadius:[width*.75,width*.75,0,0]
+            }
+          }
+        ],
+        tooltip:{
+          textStyle:{
+            fontSize:width<14?14:width>18?18:width
+          },
+        }
+      }
       this.chartInstance.setOption(option)
       this.chartInstance.resize()
     },
     starInterval(){
+      if(this.timeID){
+        clearInterval(this.timeID)
+        this.timeID=null
+      }
       this.timeID=setInterval(()=>{
         this.remainData.push(this.showData.shift())
         this.showData.push(this.remainData.shift())
         this.updateChart()
       },3000)
     }
+  },
+  destroyed() {
+    window.removeEventListener('resize',this.screenAdapter)
+    this.chartInstance.off('mouseout',this.screenAdapter)
+    clearInterval(this.timeID)
+    this.timeID=null
   },
 }
 </script>
