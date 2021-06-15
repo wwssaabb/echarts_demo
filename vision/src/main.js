@@ -1,7 +1,7 @@
 /*
  * @Author: wwssaabb
  * @Date: 2021-06-10 10:34:03
- * @LastEditTime: 2021-06-10 14:41:24
+ * @LastEditTime: 2021-06-15 11:19:39
  * @FilePath: \demo\echarts_demo\vision\src\main.js
  */
 import Vue from 'vue'
@@ -22,6 +22,12 @@ Vue.prototype.$echarts=window.echarts
 axios.defaults.baseURL='http://127.0.0.1:8888/api'
 //将axios挂载到vue原型上
 Vue.prototype.$http=axios
+
+//引入SocketService创建WebSocket对象并进行websocket的连接
+import SocketService from '@/utils/socket_service'
+SocketService.Instance.connect()
+//挂载到vue原型上
+Vue.prototype.$socket=SocketService.Instance
 
 new Vue({
   router,

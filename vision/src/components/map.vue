@@ -33,7 +33,6 @@ export default {
       this.chartInstance=this.$echarts.init(this.$refs.map,'chalk')
       //获取中国地图的矢量数据
       this.china_map=await axios.get('http://localhost:8080/static/map/china.json')
-      console.log(this.china_map)
       this.$echarts.registerMap('china',this.china_map.data)
       let option={
         title:{
@@ -67,11 +66,9 @@ export default {
     async getData(){
       let {data:res}=await this.$http.get('/map')
       this.allData=res
-      console.log(this.allData)
       this.updateChart()
     },
     updateChart(){
-      console.log('updateChart')
       let legendArr=this.allData.map(i=>i.name)
       let scatterArr=this.allData.map(i=>{
         let data=i.children
@@ -123,7 +120,6 @@ export default {
         this.chartInstance.showLoading()
         let {data:res}=await axios.get('http://localhost:8080/'+city.path)
         this.china_cityMap[e.name]=res
-        console.log(this.china_cityMap)
         this.chartInstance.hideLoading()
       }
       let city_map=this.china_cityMap[e.name]

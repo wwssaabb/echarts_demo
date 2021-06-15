@@ -103,7 +103,6 @@ export default {
           hoverAnimation:false  //关闭鼠标移入饼图时的默认动画效果
         }
       })
-      console.log(seriesData)
       let option={
         series:[
           ...seriesData
@@ -114,7 +113,6 @@ export default {
     screenAdapter(){
       const width=this.$refs.stock.offsetWidth /100 * 3.125 //1920时为60
       let textSize=width<14?14:width>24?24:width
-      console.log(textSize)
       let option={
         title:{
           textStyle:{

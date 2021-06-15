@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-12 09:32:07
- * @LastEditTime: 2021-06-12 15:15:40
+ * @LastEditTime: 2021-06-15 09:48:11
  * @FilePath: \demo\echarts_demo\vision\src\components\hot.vue
 -->
 <template>
@@ -77,7 +77,6 @@ export default {
     },
     async getData(){
       let {data:res}=await this.$http.get('/hotproduct')
-      console.log(res)
       this.allData=res
       this.updateChart()
     },
@@ -87,7 +86,6 @@ export default {
         arr.push({name:item.name,value:total,children:item.children})
         return arr
       },[])
-      console.log(this.showData)
       let legendData=this.showData.map(i=>i.name)
       let option={
         legend:{
@@ -100,10 +98,8 @@ export default {
         ],
         tooltip:{
           formatter:res=>{
-            //console.log(res)
             let arr=res.data.children
             let result=arr.reduce((s,i,index,arr)=>index!==arr.length-1?s+=i.name+':'+(i.value/res.value*100).toFixed(2)+'%</br>':s+=i.name+':'+(i.value/res.value*100).toFixed(2)+'%','')
-            //console.log(result)
             return result
           }
         }

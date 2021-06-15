@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-11 08:14:17
- * @LastEditTime: 2021-06-12 09:04:29
+ * @LastEditTime: 2021-06-15 12:06:37
  * @FilePath: \demo\echarts_demo\vision\src\components\Trend.vue
 -->
 <template>
@@ -32,9 +32,19 @@ export default {
       titleFontSize:0, //title的字体大小
     }
   },
+  created() {
+    //组件创建完成之后进行回调函数的注册
+    this.$socket.registerCallBack('trendData',this.getData)
+  },
   mounted() {
     this.initChart()
-    this.getData()
+    //this.getData()
+    this.$socket.send({
+      action:'getData',
+      socketType:'trendData',
+      chartName:'trend',
+      data:''
+    })
     window.addEventListener('resize',this.screenAdapter)
     this.screenAdapter()
   },
@@ -72,8 +82,8 @@ export default {
       }
       this.chartInstance.setOption(option)
     },
-    async getData(){//获取数据
-      const {data:res}=await this.$http.get('trend')
+    async getData(res){//获取数据
+      //const {data:res}=await this.$http.get('trend')
       this.allData=res
       this.titles=res.type.map(i=>i.text)
       this.selectTitle=this.titles[0]
@@ -183,6 +193,8 @@ export default {
   destroyed() {
     //移除窗口大小变化的时间监听
     window.removeEventListener('resize',this.screenAdapter)
+    //组件销毁时进行回调函数的取消
+    this.$socket.unRegisterCallBack('trendData')
   },
 }
 </script>

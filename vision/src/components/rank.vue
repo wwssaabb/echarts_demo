@@ -49,7 +49,6 @@ export default {
             type:'bar',
             itemStyle:{
               color:(res)=>{
-                console.log(res)
                 let colorArr=null
                 if(res.value>300){
                   colorArr=['#0ba82c','#4ff778']
@@ -89,13 +88,9 @@ export default {
     },
     async getData(){
       let {data:res}=await this.$http.get('/rank')
-      console.log(res)
       this.allData=res.sort((a,b)=>a.value-b.value)
       this.showData=this.allData.slice(0,11)
       this.remainData=this.allData.slice(11)
-      //console.log(this.allData)
-      console.log(this.showData.map(i=>i.name))
-      console.log(this.remainData.map(i=>i.name))
       this.updateChart()
       this.starInterval()
     },
@@ -116,7 +111,6 @@ export default {
     },
     screenAdapter(){
       let width=this.$refs.rank.offsetWidth /100 *3.125  //1920的情况下为60
-      console.log(width)
       let option={
         title:{
           textStyle:{
