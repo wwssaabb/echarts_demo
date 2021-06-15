@@ -1,5 +1,5 @@
 <template>
-  <div class="com-comtainer">
+  <div class="com-container">
     <div class="com-chart" ref="seller"></div>
   </div>
 </template>
@@ -121,25 +121,27 @@ export default {
       this.chartInstance.setOption(option)
     },
     screenAdapter(){//窗口分辨率发生变化时重新配置option
-      const titleFontSize=this.$refs.seller.offsetWidth/100*3.12
+      const titleFontSize=this.$refs.seller.offsetWidth /100 * 3.125
       const option={
         title:{
           textStyle:{
-            fontSize:titleFontSize
+            top:titleFontSize/2,
+            left:titleFontSize/2,
+            fontSize:titleFontSize<20?20:titleFontSize>40?40:titleFontSize
           }
         },
         series:[
           {
-            barWidth:titleFontSize,
+            barWidth:titleFontSize*2,
             itemStyle:{
-              barBorderRadius:[0,titleFontSize/2,titleFontSize/2,0]
+              barBorderRadius:[0,titleFontSize,titleFontSize,0]
             }
           }
         ],
         tooltip:{
           axisPointer:{
             lineStyle:{
-              width:titleFontSize-10
+              width:titleFontSize*2-10
             }
           }
         }

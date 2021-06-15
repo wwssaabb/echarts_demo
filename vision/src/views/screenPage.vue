@@ -17,28 +17,37 @@
       <div class="com-header-right"></div>
     </div>
     <div class="page-content-wrap">
-      <div class="page-content-left"></div>
-      <div class="page-content-middle"></div>
-      <div class="page-content-right"></div>
+      <div class="page-content-left">
+        <div class="chart-trend"><trend></trend></div>
+        <div class="chart-seller"><seller></seller></div>
+      </div>
+      <div class="page-content-middle" po-ab>
+        <div class="chart-map"><map_></map_></div>
+        <div class="chart-rank"><rank></rank></div>
+      </div>
+      <div class="page-content-right">
+        <div class="chart-hot"><hot></hot></div>
+        <div class="chart-stock"><stock></stock></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import hot from "@/components/hot";
-import map from "@/components/map";
+import map_ from "@/components/map";
 import rank from "@/components/rank";
 import seller from "@/components/seller";
 import stock from "@/components/stock";
 import trend from "@/components/trend";
 export default {
   components: {
-    /*  hot,
-    map,
+    hot,
+    map_,
     rank,
     seller,
     stock,
-    trend */
+    trend 
   },
   data() {
     return {};
@@ -122,14 +131,62 @@ export default {
   }
 }
 
-.content-wrap {
+.page-content-wrap {
   flex: 1;
+  display: flex;
+  justify-content: space-between;
 }
 .page-content-left,
-.page-content-middle,
 .page-content-right {
   width: 30vw;
   height: 100%;
-  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px;
 }
+.page-content-middle{
+  width: 40vw;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.chart-trend{
+  flex-shrink: 0;
+  width: 100%;
+  height: calc(60% - 10px);
+}
+.chart-seller{
+  width: 100%;
+  height: calc(40% - 10px);
+  margin-top: 10px;
+}
+.chart-map{
+  flex-shrink: 0;
+  width: 100%;
+  height: calc(65% - 20px);
+  margin-top: 25px;
+
+}
+.chart-rank{
+  width: 100%;
+  height: calc(35% - 20px);
+  margin-top: 15px;
+}
+.chart-hot{
+  flex-shrink: 0;
+  width: 100%;
+  height: calc(50% - 10px);
+
+}
+.chart-stock{
+  flex-shrink: 0;
+  width: 100%;
+  height: calc(50% - 10px);
+  margin-top: 10px;
+}
+
 </style>

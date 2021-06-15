@@ -178,9 +178,9 @@ export default {
   computed:{
     comStyle(){
       return {
-        fontSize:this.titleFontSize<=16?16:this.titleFontSize>=40?40:this.titleFontSize+'px',
-        /* top:this.titleFontSize/3+'px',
-        left:this.titleFontSize/3+'px', */
+        fontSize:this.titleFontSize<=20?20:this.titleFontSize>=40?40:this.titleFontSize+'px',
+        top:this.titleFontSize/2+'px',
+        left:this.titleFontSize/2+'px',
       }
     },
     arrowStyle(){

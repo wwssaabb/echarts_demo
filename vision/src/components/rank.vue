@@ -110,12 +110,14 @@ export default {
       this.chartInstance.setOption(option)
     },
     screenAdapter(){
-      let width=this.$refs.rank.offsetWidth /100 *3.125  //1920的情况下为60
+      let width=this.$refs.rank.offsetWidth /100 * 3.125  //1920的情况下为60
       let option={
         title:{
           textStyle:{
-            fontSize:width<22?22:width>40?40:width
-          },
+            top:width/2,
+            left:width/2,
+            fontSize:width<20?20:width>40?40:width
+          }
         },
         xAxis:{
           

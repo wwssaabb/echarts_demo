@@ -107,7 +107,7 @@ export default {
       this.chartInstance.setOption(option)
     },
     screenAdarpter(){
-      this.chartWidth=this.$refs.hot.offsetWidth /100 *3.125  //1920时为60
+      this.chartWidth=this.$refs.hot.offsetWidth /100 * 3.125  //1920时为60
       let option={
         legend:{
           itemWidth:this.chartWidth/2<14?14:this.chartWidth>20?20:this.chartWidth,
@@ -118,11 +118,9 @@ export default {
           }
         },
         title:{
-          top:this.chartWidth/3,  
-          left:this.chartWidth/3,
-          textStyle:{
-            fontSize:this.chartWidth<20?20:this.chartWidth>40?40:this.chartWidth
-          }
+          top:this.chartWidth/2,
+          left:this.chartWidth/2,
+          fontSize:this.chartWidth<20?20:this.chartWidth>40?40:this.chartWidth
         },
         series:[
           {
@@ -195,8 +193,8 @@ export default {
     &::after{
       content:'';
       position: absolute;
-      width: 2vw;
-      height: 2vw;
+      width: 1.5vw;
+      height: 1.5vw;
       border-right:2px solid #fff;
       border-bottom:2px solid #fff;
       transform: rotate(-45deg);
@@ -204,8 +202,8 @@ export default {
   }
   .com-chart-type{
     position: absolute;
-    bottom: 10vh;
-    right: 15vw;
+    bottom: 5vh;
+    right: 5vw;
     font-size: 40px;
     color: #fff;
     font-weight: bold;

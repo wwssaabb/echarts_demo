@@ -97,8 +97,10 @@ export default {
       let width=this.$refs.map.offsetWidth /100 *3.12
       let option={
         title:{
-          textStyle:{
-            fontSize:width
+         textStyle:{
+            top:width/2,
+            left:width/2,
+            fontSize:width<20?20:width>40?40:width
           }
         },
         legend:{
