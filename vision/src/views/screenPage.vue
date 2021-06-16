@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-15 14:42:26
- * @LastEditTime: 2021-06-15 18:07:49
+ * @LastEditTime: 2021-06-16 17:42:14
  * @FilePath: \demo\echarts_demo\vision\src\views\screenPage.vue
 -->
 <template>
@@ -138,55 +138,54 @@ export default {
 }
 .page-content-left,
 .page-content-right {
+  box-sizing: border-box;
   width: 30vw;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
-  padding: 10px;
+  
 }
+.page-content-left {padding: 10px 10px 10px 20px;}
+.page-content-right {padding: 10px 20px 10px 10px;}
+
 .page-content-middle{
+  box-sizing: border-box;
   width: 40vw;
   padding: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
 }
 .chart-trend{
   flex-shrink: 0;
   width: 100%;
   height: calc(60% - 10px);
+  margin-bottom: 10px;
 }
 .chart-seller{
   width: 100%;
-  height: calc(40% - 10px);
-  margin-top: 10px;
+  height: 40%;
 }
 .chart-map{
   flex-shrink: 0;
   width: 100%;
-  height: calc(65% - 20px);
-  margin-top: 25px;
-
+  height: calc(65% - 10px);
+  margin: 10px 0 10px 0;
 }
 .chart-rank{
   width: 100%;
-  height: calc(35% - 20px);
-  margin-top: 15px;
+  height: 35%;
 }
 .chart-hot{
-  flex-shrink: 0;
   width: 100%;
   height: calc(50% - 10px);
-
+  margin-bottom: 10px;
 }
 .chart-stock{
-  flex-shrink: 0;
   width: 100%;
-  height: calc(50% - 10px);
-  margin-top: 10px;
+  height: 50%;
+  
 }
 
 </style>

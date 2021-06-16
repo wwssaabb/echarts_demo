@@ -16,9 +16,19 @@ export default {
       timeID:null, //定时器ID
     }
   },
+  created() {
+    //组件创建完成之后进行回调函数的注册
+    this.$socket.registerCallBack('rankData',this.getData)
+  },
   mounted() {
     this.initChart()
-    this.getData()
+    //this.getData()
+    this.$socket.send({
+      action:'getData',
+      socketType:'rankData',
+      chartName:'rank',
+      data:''
+    })
     window.addEventListener('resize',this.screenAdapter)
     this.screenAdapter()
   },
@@ -32,7 +42,7 @@ export default {
           text:'▍地区销售排行榜',
         },
         grid:{
-          top:'15%',
+          top:'25%',
           left:'5%',
           right:'5%',
           bottom:'5%',
@@ -86,8 +96,8 @@ export default {
       this.chartInstance.on('mouseout',this.starInterval) //鼠标移出图表
       
     },
-    async getData(){
-      let {data:res}=await this.$http.get('/rank')
+    async getData(res){
+      //let {data:res}=await this.$http.get('/rank')
       this.allData=res.sort((a,b)=>a.value-b.value)
       this.showData=this.allData.slice(0,11)
       this.remainData=this.allData.slice(11)
@@ -159,6 +169,7 @@ export default {
     this.chartInstance.off('mouseout',this.screenAdapter)
     clearInterval(this.timeID)
     this.timeID=null
+    this.$socket.unRegisterCallBack('rankData')
   },
 }
 </script>

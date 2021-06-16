@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-11 08:14:17
- * @LastEditTime: 2021-06-15 12:06:37
+ * @LastEditTime: 2021-06-16 17:30:21
  * @FilePath: \demo\echarts_demo\vision\src\components\Trend.vue
 -->
 <template>
@@ -61,18 +61,17 @@ export default {
           type:'value'
         },
         legend:{
-          top:'8%',
-          left:40,
+          top:'10%',
           icon:'circle',
           textStyle:{
             fontSize:30
           }
         },
         grid:{
-          top:'15%',
-          right:'3%',
+          top:'18%',
+          right:'5%',
           bottom:'5%',
-          left:'3%',
+          left:'5%',
           containLabel:true
         },
         tooltip:{
@@ -148,14 +147,14 @@ export default {
 
     },
     screenAdapter(){//窗口分辨率发生变化时重新配置option
-      this.titleFontSize=this.$refs.trend.offsetWidth /100 * 3.1225
+      this.titleFontSize=this.$refs.trend.offsetWidth /100 * 3.125 
       let option={
         legend:{
-          itemWidth:this.titleFontSize/2,
-          itemHeight:this.titleFontSize/2,
-          itemGap:this.titleFontSize/2,
+          itemWidth:this.titleFontSize<=12?12:this.titleFontSize>=20?20:this.titleFontSize,
+          itemHeight:this.titleFontSize<=12?12:this.titleFontSize>=20?20:this.titleFontSize,
+          itemGap:this.titleFontSize<=12?12:this.titleFontSize>=20?20:this.titleFontSize,
           textStyle:{
-            fontSize:this.titleFontSize/2
+            fontSize:this.titleFontSize<=14?14:this.titleFontSize>=20?20:this.titleFontSize
           }
         }
       }
@@ -178,15 +177,15 @@ export default {
   computed:{
     comStyle(){
       return {
-        fontSize:this.titleFontSize<=20?20:this.titleFontSize>=40?40:this.titleFontSize+'px',
+        fontSize:(this.titleFontSize<=20?20:this.titleFontSize>=40?40:this.titleFontSize)+'px',
         top:this.titleFontSize/2+'px',
         left:this.titleFontSize/2+'px',
       }
     },
     arrowStyle(){
       return {
-        width:this.titleFontSize/2<=15?15:this.titleFontSize/2>=25?25:this.titleFontSize/2+'px',
-        height:this.titleFontSize/2<=15?15:this.titleFontSize/2>=25?25:this.titleFontSize/2+'px',
+        width:(this.titleFontSize/2<=15?15:this.titleFontSize/2>=25?25:this.titleFontSize/2)+'px',
+        height:(this.titleFontSize/2<=15?15:this.titleFontSize/2>=25?25:this.titleFontSize/2)+'px',
       }
     }
   },

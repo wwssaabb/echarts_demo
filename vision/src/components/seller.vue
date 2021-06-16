@@ -16,9 +16,19 @@ export default {
       timerId:null,     //页数变化的定时器
     }
   },
+  created() {
+    //组件创建完成之后进行回调函数的注册
+    this.$socket.registerCallBack('sellerData',this.getData)
+  },
   mounted() {
     this.initChart()
-    this.getData()
+    //this.getData()
+    this.$socket.send({
+      action:'getData',
+      socketType:'sellerData',
+      chartName:'seller',
+      data:''
+    })
     window.addEventListener('resize',this.screenAdapter)
     this.screenAdapter()
   },
@@ -40,7 +50,7 @@ export default {
           left:20,
         },
         grid:{
-          top:'10%',
+          top:'15%',
           left:'5%',
           right:'5%',
           bottom:'5%',
@@ -92,9 +102,9 @@ export default {
       }
       this.chartInstance.setOption(option)
     },
-    async getData(){//获取服务器数据
-      const res=await this.$http.get('/seller')
-      this.all_data=res.data
+    async getData(res){//获取服务器数据
+      //const res=await this.$http.get('/seller')
+      this.all_data=res
       //处理数据，从小到大排序
       this.all_data.sort((a,b)=>b.value-a.value)
       //处理数据，分页，5条数据一页
@@ -132,16 +142,16 @@ export default {
         },
         series:[
           {
-            barWidth:titleFontSize*2,
+            barWidth:titleFontSize*1.5,
             itemStyle:{
-              barBorderRadius:[0,titleFontSize,titleFontSize,0]
+              barBorderRadius:[0,titleFontSize*.75,titleFontSize*.75,0]
             }
           }
         ],
         tooltip:{
           axisPointer:{
             lineStyle:{
-              width:titleFontSize*2-10
+              width:titleFontSize*1.5-10
             }
           }
         }
@@ -168,6 +178,7 @@ export default {
     clearInterval(this.timerId)
     this.timerId=null
     window.removeEventListener('resize',this.screenAdapter)
+    this.$socket.unRegisterCallBack('sellerData')
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-11 12:02:48
- * @LastEditTime: 2021-06-12 09:01:33
+ * @LastEditTime: 2021-06-16 18:02:31
  * @FilePath: \demo\echarts_demo\vision\src\components\map.vue
 -->
 <template>
@@ -22,11 +22,21 @@ export default {
       china_cityMap:{},  //中国城市地图矢量数据
     }
   },
+  created() {
+    //组件创建完成之后进行回调函数的注册
+    this.$socket.registerCallBack('mapData',this.getData)
+  },
    mounted() {
-      this.initChart()
-      this.getData()
-      window.addEventListener('resize',this.screenAdapter)
-      this.screenAdapter()
+    this.initChart()
+    //this.getData()
+    this.$socket.send({
+      action:'getData',
+      socketType:'mapData',
+      chartName:'map',
+      data:''
+    })
+    window.addEventListener('resize',this.screenAdapter)
+    this.screenAdapter()
   },
   methods: {
     async initChart(){
@@ -39,9 +49,6 @@ export default {
           text:'▍商家分布',
           top:20,
           left:20,
-          textStyle:{
-            fontSize:30
-          }
         },
         geo:{
           type:'map',
@@ -63,8 +70,8 @@ export default {
       this.chartInstance.setOption(option)
       this.chartInstance.on('click',this.changeCity)
     },
-    async getData(){
-      let {data:res}=await this.$http.get('/map')
+    async getData(res){
+      //let {data:res}=await this.$http.get('/map')
       this.allData=res
       this.updateChart()
     },
@@ -94,21 +101,19 @@ export default {
       this.chartInstance.setOption(option)
     },
     screenAdapter(){
-      let width=this.$refs.map.offsetWidth /100 *3.12
+      let width=this.$refs.map.offsetWidth /100 * 3.125
       let option={
         title:{
          textStyle:{
-            top:width/2,
-            left:width/2,
             fontSize:width<20?20:width>40?40:width
           }
         },
         legend:{
-          itemWidth:width/2.5,
-          itemHeight:width/2.5,
-          itemGap:width/3,
+          itemWidth:width<14?14:width>20?20:width,
+          itemHeight:width<14?14:width>20?20:width,
+          itemGap:width<14?14:width>20?20:width,
           textStyle:{
-            fontSize:width/2.5
+            fontSize:width<14?14:width>20?20:width
           }
         }
       }
@@ -145,6 +150,7 @@ export default {
   destroyed() {
     window.removeEventListener('resize',this.screenAdapter)
     this.chartInstance.off('click',this.changeCity)
+    this.$socket.unRegisterCallBack('mapData')
   },
 }
 </script>

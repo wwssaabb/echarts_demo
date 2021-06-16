@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-12 09:32:07
- * @LastEditTime: 2021-06-15 09:48:11
+ * @LastEditTime: 2021-06-16 18:08:19
  * @FilePath: \demo\echarts_demo\vision\src\components\hot.vue
 -->
 <template>
@@ -27,9 +27,19 @@ export default {
       chartWidth:0,   //当前展示数据的索引
     }
   },
+  created() {
+    //组件创建完成之后进行回调函数的注册
+    this.$socket.registerCallBack('hotData',this.getData)
+  },
   mounted(){
     this.initChart()
-    this.getData()
+    //this.getData()
+    this.$socket.send({
+      action:'getData',
+      socketType:'hotData',
+      chartName:'hotproduct',
+      data:''
+    })
     window.addEventListener('resize',this.screenAdarpter)
     this.screenAdarpter()
   },
@@ -38,11 +48,13 @@ export default {
       this.chartInstance=this.$echarts.init(this.$refs.hot,'chalk')
       let option={
         title:{
+          top:20, 
+          left:20, 
           text:'▍热销商品销售金额占比统计'
         },
         legend:{
           show:true,
-          top:'10%',
+          top:'15%',
           icon:'circle',
         },
         series:[
@@ -55,9 +67,6 @@ export default {
             emphasis:{
               label:{
                 show:true,
-                textStyle:{
-                  fontSize:16
-                }
               },
               labelLine:{
                 show:false
@@ -75,8 +84,8 @@ export default {
       }
       this.chartInstance.setOption(option)
     },
-    async getData(){
-      let {data:res}=await this.$http.get('/hotproduct')
+    async getData(res){
+      //let {data:res}=await this.$http.get('/hotproduct')
       this.allData=res
       this.updateChart()
     },
@@ -110,24 +119,22 @@ export default {
       this.chartWidth=this.$refs.hot.offsetWidth /100 * 3.125  //1920时为60
       let option={
         legend:{
-          itemWidth:this.chartWidth/2<14?14:this.chartWidth>20?20:this.chartWidth,
-          itemHeight:this.chartWidth/2<14?14:this.chartWidth>20?20:this.chartWidth,
-          itemGap:this.chartWidth/2<14?14:this.chartWidth>20?20:this.chartWidth,
+          itemWidth:this.chartWidth<16?16:this.chartWidth>20?20:this.chartWidth,
+          itemHeight:this.chartWidth<16?16:this.chartWidth>20?20:this.chartWidth,
+          itemGap:this.chartWidth<16?16:this.chartWidth>20?20:this.chartWidth,
           textStyle:{
-            fontSize:this.chartWidth/2<14?14:this.chartWidth>20?20:this.chartWidth
+            fontSize:this.chartWidth<16?16:this.chartWidth>20?20:this.chartWidth
           }
         },
         title:{
-          top:this.chartWidth/2,
-          left:this.chartWidth/2,
           fontSize:this.chartWidth<20?20:this.chartWidth>40?40:this.chartWidth
         },
         series:[
           {
-            radius:this.chartWidth*5,
+            radius:this.chartWidth*5.5,
             emphasis:{
             lebal:{
-              fontSize:this.chartWidth/2<14?14:this.chartWidth>18?18:this.chartWidth
+              fontSize:this.chartWidth/2<16?16:this.chartWidth>20?20:this.chartWidth
             }
             },
           }
@@ -149,6 +156,7 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize',this.screenAdarpter)
+    this.$socket.unRegisterCallBack('hotData')
   },
 }
 </script>
@@ -202,8 +210,8 @@ export default {
   }
   .com-chart-type{
     position: absolute;
-    bottom: 5vh;
-    right: 5vw;
+    bottom: 3vh;
+    left: 3vw;
     font-size: 40px;
     color: #fff;
     font-weight: bold;

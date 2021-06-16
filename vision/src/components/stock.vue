@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-12 15:02:48
- * @LastEditTime: 2021-06-12 17:15:43
+ * @LastEditTime: 2021-06-16 17:52:27
  * @FilePath: \demo\echarts_demo\vision\src\components\stock.vue
 -->
 <template>
@@ -21,9 +21,19 @@ export default {
       timerID:null,   //数据变更的定时器ID
     }
   },
+  created() {
+    //组件创建完成之后进行回调函数的注册
+    this.$socket.registerCallBack('stockData',this.getData)
+  },
   mounted() {
     this.initChart()
-    this.getData()
+    //this.getData()
+    this.$socket.send({
+      action:'getData',
+      socketType:'stockData',
+      chartName:'stock',
+      data:''
+    })
     window.addEventListener('resize',this.screenAdapter)
     this.screenAdapter()
   },
@@ -50,8 +60,8 @@ export default {
       })
       this.chartInstance.on('mouseout',this.startInterval)
     },
-    async getData(){
-      let {data:res}=await this.$http.get('/stock')
+    async getData(res){
+      //let {data:res}=await this.$http.get('/stock')
       this.allData=res
       this.showData.push(this.allData.slice(0,5))
       this.showData.push(this.allData.slice(5))
@@ -98,7 +108,7 @@ export default {
               color:colorArr[index][0],
             }
           },
-          radius:['28%','25%'],
+          radius:['32%','30%'],
           center:cneterArr[index],
           hoverAnimation:false  //关闭鼠标移入饼图时的默认动画效果
         }
@@ -116,8 +126,6 @@ export default {
       let option={
         title:{
           textStyle:{
-            top:width/2,
-            left:width/2,
             fontSize:width<20?20:width>40?40:width
           }
         },
@@ -153,6 +161,7 @@ export default {
     this.timerID=null
     this.chartInstance.off('mousemove')
     this.chartInstance.off('mouseout',this.startInterval)
+    this.$socket.unRegisterCallBack('stockData')
   },
 }
 </script>
