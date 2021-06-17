@@ -72,3 +72,13 @@ canvas{
   transition: .3s;
   transform: translateY(5px) rotate(-135deg);
 }
+
+.com-full{
+  right: 1vw;
+  top: 1vw;
+  width: 1.5vw;
+  height: 1.5vw;
+  background-color: #fff;
+  clip-path: polygon(0 0,50% 0,55% 0,55% 45%,100% 45%,100% 50%,55% 50%,55% 100%,50% 100%,50% 50%);
+  z-index: 20;
+}

@@ -1,13 +1,13 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-15 14:42:26
- * @LastEditTime: 2021-06-16 17:42:14
+ * @LastEditTime: 2021-06-17 17:53:12
  * @FilePath: \demo\echarts_demo\vision\src\views\screenPage.vue
 -->
 <template>
   <div class="com-page bg-color1 flex-css">
     <div class="com-header po-re">
-      <div class="com-header-left"></div>
+      <div class="com-header-left"><p class="po-ab">logo</p></div>
       <div class="com-header-center po-ab">
         电商平台实时监控系统
         <div class="border-left po-ab"></div>
@@ -80,13 +80,21 @@ export default {
   height: 2vh;
   border-bottom: 2px solid #474554;
 }
+.com-header p{
+  left: 5vw;
+  top: 50%;
+  color:#fff;
+  font-family: 'Ruslan Display', cursive;
+  font-size: 1.5625vw;
+  transform: translateY(-150%);
+}
 .com-header-center {
   width: 30%;
   height: 4vh;
   top: 20px;
   left: 50%;
   padding-bottom: 5px;
-  font-size: 20px;
+  font-size: 1.5625vw;
   //font-weight: bold;
   color: #fff;
   transform: translateX(-50%);
@@ -135,6 +143,7 @@ export default {
   flex: 1;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 }
 .page-content-left,
 .page-content-right {
@@ -148,6 +157,7 @@ export default {
 }
 .page-content-left {padding: 10px 10px 10px 20px;}
 .page-content-right {padding: 10px 20px 10px 10px;}
+
 
 .page-content-middle{
   box-sizing: border-box;

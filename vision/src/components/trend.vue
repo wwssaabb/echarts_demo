@@ -16,6 +16,8 @@
       </div>
       <div class="arrow" @click="is_select=!is_select" :class="is_select?'rotate-180':''" :style="arrowStyle"></div>
     </div>
+    <div class="com-full po-ab"></div>
+    <div class="com-back po-ab"></div>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-12 09:32:07
- * @LastEditTime: 2021-06-16 18:08:19
+ * @LastEditTime: 2021-06-17 16:21:13
  * @FilePath: \demo\echarts_demo\vision\src\components\hot.vue
 -->
 <template>
