@@ -18,16 +18,16 @@
     </div>
     <div class="page-content-wrap">
       <div class="page-content-left">
-        <div class="chart-trend"><trend></trend></div>
-        <div class="chart-seller"><seller></seller></div>
+        <div :class="['chart-trend','po-re',fullScreenStatus['trend']?'com-full-screen':'']"><trend ref="trend"></trend><div :class="fullScreenStatus['trend']?'com-zoom-out':'com-zoom-in'" @click="changeFullScreen('trend')"></div></div>
+        <div class="chart-seller po-re" :class="fullScreenStatus['seller']?'com-full-screen':''"><seller ref="seller"></seller><div :class="fullScreenStatus['seller']?'com-zoom-out':'com-zoom-in'" @click="changeFullScreen('seller')"></div></div>
       </div>
       <div class="page-content-middle" po-ab>
-        <div class="chart-map"><map_></map_></div>
-        <div class="chart-rank"><rank></rank></div>
+        <div class="chart-map po-re" :class="fullScreenStatus['map']?'com-full-screen':''"><map_ ref="map"></map_><div :class="fullScreenStatus['map']?'com-zoom-out':'com-zoom-in'" @click="changeFullScreen('map')"></div></div>
+        <div class="chart-rank po-re" :class="fullScreenStatus['rank']?'com-full-screen':''"><rank ref="rank"></rank><div :class="fullScreenStatus['rank']?'com-zoom-out':'com-zoom-in'" @click="changeFullScreen('rank')"></div></div>
       </div>
       <div class="page-content-right">
-        <div class="chart-hot"><hot></hot></div>
-        <div class="chart-stock"><stock></stock></div>
+        <div class="chart-hot po-re" :class="fullScreenStatus['hot']?'com-full-screen':''"><hot ref="hot"></hot><div :class="fullScreenStatus['hot']?'com-zoom-out':'com-zoom-in'" @click="changeFullScreen('hot')"></div></div>
+        <div class="chart-stock po-re" :class="fullScreenStatus['stock']?'com-full-screen':''"><stock ref="stock"></stock><div :class="fullScreenStatus['stock']?'com-zoom-out':'com-zoom-in'" @click="changeFullScreen('stock')"></div></div>
       </div>
     </div>
   </div>
@@ -50,9 +50,42 @@ export default {
     trend 
   },
   data() {
-    return {};
+    return {
+      fullScreenStatus:{
+        hot:false,
+        map:false,
+        rank:false,
+        seller:false,
+        stock:false,
+        trend:false,
+      }
+    };
   },
-  methods: {}
+  created() {
+    this.$socket.registerCallBack('fullScreen',this.recvData)
+  },
+  methods: {
+    changeFullScreen(chartName){
+      const targetValue=!this.fullScreenStatus[chartName]
+      this.$socket.send({
+        action:'fullScreen',
+        socketType:'fullScreen',
+        chartName:chartName,
+        value:targetValue
+      })
+    },
+    recvData(data){
+      console.log(data)
+      this.fullScreenStatus[data.chartName]=data.value
+      console.log(this.fullScreenStatus)
+      this.$nextTick(()=>{
+        this.$refs[data.chartName].screenAdapter()
+      })
+    }
+  },
+  destroyed() {
+    this.$socket.unRegisterCallBack('fullScreen')
+  },
 };
 </script>
 

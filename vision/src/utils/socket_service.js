@@ -61,7 +61,8 @@ export default class SocketService {
           const data=JSON.parse(msg_data.data)
           this.callBackMapping[socketType].call(this,data)
         }else if(action==='fullScreen'){
-          
+          console.log(msg_data)
+          this.callBackMapping[socketType].call(this,msg_data)
         }else if(action==='themeChange'){
           
         }

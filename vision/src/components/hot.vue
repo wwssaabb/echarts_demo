@@ -40,8 +40,8 @@ export default {
       chartName:'hotproduct',
       data:''
     })
-    window.addEventListener('resize',this.screenAdarpter)
-    this.screenAdarpter()
+    window.addEventListener('resize',this.screenAdapter)
+    this.screenAdapter()
   },
   methods: {
     initChart(){
@@ -115,7 +115,7 @@ export default {
       }
       this.chartInstance.setOption(option)
     },
-    screenAdarpter(){
+    screenAdapter(){
       this.chartWidth=this.$refs.hot.offsetWidth /100 * 3.125  //1920时为60
       let option={
         legend:{
