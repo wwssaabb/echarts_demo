@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -34,7 +35,7 @@ export default {
   },
   methods: {
     initChart() {//初始化图表
-      this.chartInstance=this.$echarts.init(this.$refs.seller,'chalk')
+      this.chartInstance=this.$echarts.init(this.$refs.seller,this.theme)
       //监听鼠标移入，取消图表变化定时器
       this.chartInstance.on('mouseover',()=>{
         clearInterval(this.timerId)
@@ -68,7 +69,7 @@ export default {
             label:{
               show:true,
               position:'right',
-              color:'#fff',
+              color:this.theme==='chalk'?'#fff':'#333',
               textStyle:{
                 fontSize:20
               }
@@ -94,7 +95,7 @@ export default {
             type:'line',
             z:0,
             lineStyle:{
-              color:'#2d3443'
+              color:this.theme==='chalk'?'#2d3443':'#c8c8c8'
             }
           }
         }
@@ -145,6 +146,11 @@ export default {
             barWidth:titleFontSize*1.5,
             itemStyle:{
               barBorderRadius:[0,titleFontSize*.75,titleFontSize*.75,0]
+            },
+            label:{
+              textStyle:{
+                fontSize:titleFontSize<12?12:titleFontSize>20?20:titleFontSize
+              }
             }
           }
         ],
@@ -172,7 +178,16 @@ export default {
   watch:{
     currentPage(){
       this.dataOption()
+    },
+    theme(){
+      this.chartInstance.dispose()
+      this.initChart()
+      this.screenAdapter()
+      this.dataOption()
     }
+  },
+  computed:{
+    ...mapState(['theme'])
   },
   destroyed() {
     clearInterval(this.timerId)

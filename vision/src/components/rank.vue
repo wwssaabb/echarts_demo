@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -34,7 +35,7 @@ export default {
   },
   methods: {
     initChart(){
-      this.chartInstance=this.$echarts.init(this.$refs.rank,'chalk')
+      this.chartInstance=this.$echarts.init(this.$refs.rank,this.theme)
       let option={
         title:{
           top:20,
@@ -68,15 +69,15 @@ export default {
                   colorArr=['#5052ee','#ab6ee5']
                 }
                 return new this.$echarts.graphic.LinearGradient(0,0,0,1,[
-                        {
-                          offset:0,
-                          color:colorArr[0]
-                        },
-                        {
-                          offset:1,
-                          color:colorArr[1]
-                        },
-                      ])
+                  {
+                    offset:0,
+                    color:colorArr[0]
+                  },
+                  {
+                    offset:1,
+                    color:colorArr[1]
+                  },
+                ])
                 }
             }
           }
@@ -162,6 +163,17 @@ export default {
         this.showData.push(this.remainData.shift())
         this.updateChart()
       },3000)
+    }
+  },
+  computed:{
+    ...mapState(['theme']),
+  },
+  watch:{
+    theme(){
+      this.chartInstance.dispose()
+      this.initChart()
+      this.screenAdapter()
+      this.updateChart()
     }
   },
   destroyed() {

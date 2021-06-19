@@ -1,7 +1,7 @@
 /*
  * @Author: wwssaabb
  * @Date: 2021-06-15 10:46:42
- * @LastEditTime: 2021-06-15 14:37:12
+ * @LastEditTime: 2021-06-19 08:22:20
  * @FilePath: \demo\echarts_demo\vision\src\utils\socket_service.js
  */
 
@@ -61,7 +61,6 @@ export default class SocketService {
           const data=JSON.parse(msg_data.data)
           this.callBackMapping[socketType].call(this,data)
         }else if(action==='fullScreen'){
-          console.log(msg_data)
           this.callBackMapping[socketType].call(this,msg_data)
         }else if(action==='themeChange'){
           

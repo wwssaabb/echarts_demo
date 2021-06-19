@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-12 15:02:48
- * @LastEditTime: 2021-06-16 17:52:27
+ * @LastEditTime: 2021-06-19 17:35:58
  * @FilePath: \demo\echarts_demo\vision\src\components\stock.vue
 -->
 <template>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -39,7 +40,7 @@ export default {
   },
   methods: {
     initChart(){
-      this.chartInstance=this.$echarts.init(this.$refs.stock,'chalk')
+      this.chartInstance=this.$echarts.init(this.$refs.stock,this.theme)
       let option={
         title:{
           text:'▍库存销售量',
@@ -154,7 +155,16 @@ export default {
   watch:{
     currentIndex(){
       this.updateChart()
+    },
+    theme(){
+      this.chartInstance.dispose()
+      this.initChart()
+      this.screenAdapter()
+      this.updateChart()
     }
+  },
+  computed:{
+    ...mapState(['theme'])
   },
   destroyed() {
     clearInterval(this.timerID)

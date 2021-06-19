@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-15 14:42:26
- * @LastEditTime: 2021-06-17 17:53:12
+ * @LastEditTime: 2021-06-19 17:51:22
  * @FilePath: \demo\echarts_demo\vision\src\views\screenPage.vue
 -->
 <template>
@@ -14,7 +14,7 @@
         <div class="border-bottom po-ab"></div>
         <div class="border-right po-ab"></div>
       </div>
-      <div class="com-header-right"></div>
+      <div class="com-header-right" @click="changeTheme"><i class="com-theme-change po-ab"> <img src="@/../public/static/img/reset.png" alt="" srcset=""> </i></div>
     </div>
     <div class="page-content-wrap">
       <div class="page-content-left">
@@ -58,7 +58,8 @@ export default {
         seller:false,
         stock:false,
         trend:false,
-      }
+      },
+      defaultTheme:'chalk'
     };
   },
   created() {
@@ -75,12 +76,13 @@ export default {
       })
     },
     recvData(data){
-      console.log(data)
       this.fullScreenStatus[data.chartName]=data.value
-      console.log(this.fullScreenStatus)
       this.$nextTick(()=>{
         this.$refs[data.chartName].screenAdapter()
       })
+    },
+    changeTheme(){
+      this.$store.commit('changeTheme')
     }
   },
   destroyed() {
@@ -188,6 +190,7 @@ export default {
   justify-content: flex-start;
   
 }
+
 .page-content-left {padding: 10px 10px 10px 20px;}
 .page-content-right {padding: 10px 20px 10px 10px;}
 
@@ -230,5 +233,7 @@ export default {
   height: 50%;
   
 }
+
+
 
 </style>

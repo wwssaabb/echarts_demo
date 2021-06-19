@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-11 12:02:48
- * @LastEditTime: 2021-06-16 18:02:31
+ * @LastEditTime: 2021-06-19 17:38:11
  * @FilePath: \demo\echarts_demo\vision\src\components\map.vue
 -->
 <template>
@@ -13,6 +13,7 @@
 <script>
 import axios from 'axios'
 import {getProvinceMapInfo} from '../utils/map_utils'
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -40,7 +41,7 @@ export default {
   },
   methods: {
     async initChart(){
-      this.chartInstance=this.$echarts.init(this.$refs.map,'chalk')
+      this.chartInstance=this.$echarts.init(this.$refs.map,this.theme)
       //获取中国地图的矢量数据
       this.china_map=await axios.get('http://localhost:8080/static/map/china.json')
       this.$echarts.registerMap('china',this.china_map.data)
@@ -145,6 +146,17 @@ export default {
         }
       }
       this.chartInstance.setOption(option)
+    }
+  },
+  computed:{
+    ...mapState(['theme'])
+  },
+  watch:{
+    theme(){
+      this.chartInstance.dispose()  //销毁当前图表实例
+      this.initChart()
+      this.screenAdapter()
+      this.updateChart()
     }
   },
   destroyed() {

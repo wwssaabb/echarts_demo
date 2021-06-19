@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-11 08:14:17
- * @LastEditTime: 2021-06-16 17:30:21
+ * @LastEditTime: 2021-06-19 18:06:29
  * @FilePath: \demo\echarts_demo\vision\src\components\Trend.vue
 -->
 <template>
@@ -10,7 +10,7 @@
     <div class="com-chart-title po-ab" :class="is_select?'ov-no':'ov-hi'" :style="comStyle">
       <div>▍</div>
       <div class="select-area">
-        <div class="select-item" v-for="(title,index) in titles" :key="index" @click="select_title(index)">
+        <div class="select-item" v-for="(title,index) in titles" :key="index" @click="select_title(index)" :style="{backgroundColor:theme==='chalk'?'#222733':'#fff'}">
           {{title}}
         </div>
       </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -51,7 +52,7 @@ export default {
   methods: {
     initChart(){//初始化图表
       //获取echarts实例对象
-      this.chartInstance=this.$echarts.init(this.$refs.trend,'chalk')
+      this.chartInstance=this.$echarts.init(this.$refs.trend,this.theme)
       let option={
         xAxis:{
           type:'category',
@@ -89,9 +90,9 @@ export default {
       this.showData.push(this.allData.map)
       this.showData.push(this.allData.seller)
       this.showData.push(this.allData.commodity)
-      this.updataChart()
+      this.updateChart()
     },
-    updataChart(){//数据更新时重新配置option
+    updateChart(){//数据更新时重新配置option
       //半透明的颜色值
       const colorArr1=[
         'rgba(185,86,15,0.5)',
@@ -171,21 +172,32 @@ export default {
   },
   watch:{
     selectTitle(){
-      this.updataChart()
+      this.updateChart()
+    },
+    theme(){
+      this.chartInstance.dispose()
+      this.initChart()
+      this.screenAdapter()
+      this.updateChart()
     }
   },
   computed:{
+    ...mapState(['theme']),
     comStyle(){
       return {
         fontSize:(this.titleFontSize<=20?20:this.titleFontSize>=40?40:this.titleFontSize)+'px',
         top:this.titleFontSize/2+'px',
         left:this.titleFontSize/2+'px',
+        color:this.theme==='chalk'?'#fff':'#333',
+        backgroundColor:this.theme==='chalk'?'#222733':'#fff'
       }
     },
     arrowStyle(){
       return {
         width:(this.titleFontSize/2<=15?15:this.titleFontSize/2>=25?25:this.titleFontSize/2)+'px',
         height:(this.titleFontSize/2<=15?15:this.titleFontSize/2>=25?25:this.titleFontSize/2)+'px',
+        borderRight: this.theme==='chalk'?'2px solid #fff':'2px solid #333' ,
+        borderBottom: this.theme==='chalk'?'2px solid #fff':'2px solid #333'
       }
     }
   },

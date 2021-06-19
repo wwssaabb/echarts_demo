@@ -1,7 +1,7 @@
 <!--
  * @Author: wwssaabb
  * @Date: 2021-06-12 09:32:07
- * @LastEditTime: 2021-06-17 16:21:13
+ * @LastEditTime: 2021-06-19 17:40:33
  * @FilePath: \demo\echarts_demo\vision\src\components\hot.vue
 -->
 <template>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -45,7 +46,7 @@ export default {
   },
   methods: {
     initChart(){
-      this.chartInstance=this.$echarts.init(this.$refs.hot,'chalk')
+      this.chartInstance=this.$echarts.init(this.$refs.hot,this.theme)
       let option={
         title:{
           top:20, 
@@ -145,12 +146,19 @@ export default {
     }
   },
   computed:{
+    ...mapState(['theme']),
     typeStyle(){
       return {fontSize:this.chartWidth*2/3<24?24:this.chartWidth*2/3+'px'} 
     }
   },
   watch:{
     currentIndex(){
+      this.updateChart()
+    },
+    theme(){
+      this.chartInstance.dispose()
+      this.initChart()
+      this.screenAdapter()
       this.updateChart()
     }
   },
