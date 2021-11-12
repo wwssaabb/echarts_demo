@@ -1,3 +1,9 @@
+/*
+ * @Author: wwssaabb
+ * @Date: 2021-06-11 16:37:39
+ * @LastEditTime: 2021-11-12 14:40:43
+ * @FilePath: \echarts_demo\vision\src\utils\map_utils.js
+ */
 const name2pinyin = {
   安徽: 'anhui',
   陕西: 'shanxi1',
@@ -35,7 +41,7 @@ const name2pinyin = {
   浙江: 'zhejiang'
 }
 
-export function getProvinceMapInfo (arg) {
+export function getProvinceMapInfo(arg) {
   const path = `/static/map/province/${name2pinyin[arg]}.json`
   return {
     key: name2pinyin[arg],
